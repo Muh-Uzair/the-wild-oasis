@@ -4,6 +4,8 @@ import { formatCurrency } from "../../utils/helpers";
 import { deleteCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import CreateCabinForm from "./CreateCabinForm";
 
 const TableRow = styled.div`
   display: grid;
@@ -44,6 +46,11 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
+const DivAllBtns = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 CabinRow.propTypes = {
   cabin: PropTypes.object,
 };
@@ -75,16 +82,28 @@ export default function CabinRow({ cabin }) {
   // deletion step 4 : onClick pe mutate dalo
   // deletion step 5 : step 4 tak deletion kaam krta hai lakin remote state ko ui k sath sync nahi krta us k liye invalidate krna hota hai
 
+  const [showEditForm, setShowEditForm] = useState(false);
+
   return (
-    <TableRow role="row">
-      <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
-      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
-        Delete
-      </button>
-    </TableRow>
+    <>
+      <TableRow role="row">
+        <Img src={image} />
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity} guests</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        <Discount>{formatCurrency(discount)}</Discount>
+        <DivAllBtns>
+          <button
+            onClick={() => setShowEditForm((showEditForm) => !showEditForm)}
+          >
+            Edit
+          </button>
+          <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+            Delete
+          </button>
+        </DivAllBtns>
+      </TableRow>
+      {showEditForm && <CreateCabinForm cabin={cabin} />}
+    </>
   );
 }
