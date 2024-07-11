@@ -26,8 +26,6 @@ export async function deleteCabin(id) {
 // deletion step 2 : policy update kari
 
 export async function createEditCabin(newCabin, id) {
-  console.log(newCabin);
-  console.log(id);
   // if in edit session we provide an image so use that image path else image path will be provided by user
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
@@ -78,12 +76,3 @@ export async function createEditCabin(newCabin, id) {
 
   return data;
 }
-
-// const avatarFile = event.target.files[0]
-// const { data, error } = await supabase
-//   .storage
-//   .from('avatars')
-//   .upload('public/avatar1.png', avatarFile, {
-//     cacheControl: '3600',
-//     upsert: false
-//   })

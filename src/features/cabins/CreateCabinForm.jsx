@@ -1,7 +1,4 @@
-// import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 
 import { Input } from "../../ui/Input";
@@ -9,8 +6,9 @@ import Form from "../../ui/Form";
 import { Button } from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createEditCabin } from "../../services/apiCabins";
 import FormRow from "./FormRow";
+import useCreateCabin from "./useCreateCabin";
+import useUpdateCabin from "./useUpdateCabin";
 
 CreateCabinForm.propTypes = {
   cabin: PropTypes.object,
@@ -19,7 +17,6 @@ CreateCabinForm.propTypes = {
 function CreateCabinForm({ cabin = {} }) {
   // taking value out of cabin that is received for editing and also ensuring
   // by using boolean function that wether the cabin received is for editing or not
-
   const { id: editId, ...editValues } = cabin;
   const isFormEdit = Boolean(editId);
 
@@ -29,42 +26,37 @@ function CreateCabinForm({ cabin = {} }) {
   });
   const { errors } = formState;
 
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success("New cabin successfully created");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
-    mutationFn: ({ newCabin, id }) => createEditCabin(newCabin, id),
-    onSuccess: () => {
-      toast.success("Cabin successfully edited ");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
+  const { createCabin, isCreating } = useCreateCabin();
+  const { editCabin, isEditing } = useUpdateCabin();
   const isUploadingData = isCreating || isEditing;
-
-  const queryClient = useQueryClient();
-
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
     if (isFormEdit) {
-      editCabin({ newCabin: { ...data, image }, id: editId });
+      editCabin(
+        { newCabin: { ...data, image }, id: editId },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
     } else {
-      createCabin({ ...data, image: image });
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
     }
+    console.log(isUploadingData, isCreating, isEditing);
   }
   function onError() {
     //console.log(errors);
   }
+
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow label="Cabin name" error={errors?.name?.message}>
