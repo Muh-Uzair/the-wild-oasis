@@ -2,9 +2,7 @@ import { Row } from "../ui/Row";
 import { Heading } from "../ui/Heading";
 import CabinTable from "../features/cabins/CabinTable";
 import styled from "styled-components";
-import { Button } from "../ui/Button";
-import { useState } from "react";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/AddCabin";
 
 const Div = styled.div`
   display: flex;
@@ -13,7 +11,7 @@ const Div = styled.div`
 `;
 
 export default function CabinsPG() {
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
   return (
     <Div>
       <Row type="horizontal">
@@ -24,11 +22,7 @@ export default function CabinsPG() {
       <Row type="vertical">
         <CabinTable />
       </Row>
-
-      <Button onClick={() => setShowForm((showForm) => !showForm)}>
-        Add new cabin
-      </Button>
-      {showForm && <CreateCabinForm />}
+      <AddCabin />
     </Div>
   );
 }

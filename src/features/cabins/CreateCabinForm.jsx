@@ -6,15 +6,16 @@ import Form from "../../ui/Form";
 import { Button } from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import FormRow from "./FormRow";
+import FormRow from "../../ui/FormRow";
 import useCreateCabin from "./useCreateCabin";
 import useUpdateCabin from "./useUpdateCabin";
 
 CreateCabinForm.propTypes = {
   cabin: PropTypes.object,
+  onClose: PropTypes.func,
 };
 
-function CreateCabinForm({ cabin = {} }) {
+function CreateCabinForm({ cabin = {}, onClose }) {
   // taking value out of cabin that is received for editing and also ensuring
   // by using boolean function that wether the cabin received is for editing or not
   const { id: editId, ...editValues } = cabin;
@@ -26,9 +27,10 @@ function CreateCabinForm({ cabin = {} }) {
   });
   const { errors } = formState;
 
-  const { createCabin, isCreating } = useCreateCabin();
-  const { editCabin, isEditing } = useUpdateCabin();
-  const isUploadingData = isCreating || isEditing;
+  const { createCabin, creatingStatus } = useCreateCabin();
+  const { editCabin, editingStatus } = useUpdateCabin();
+  const isUploadingData =
+    creatingStatus === "pending" || editingStatus === "pending";
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
@@ -38,6 +40,7 @@ function CreateCabinForm({ cabin = {} }) {
         {
           onSuccess: () => {
             reset();
+            onClose?.();
           },
         }
       );
@@ -47,11 +50,11 @@ function CreateCabinForm({ cabin = {} }) {
         {
           onSuccess: () => {
             reset();
+            onClose?.();
           },
         }
       );
     }
-    console.log(isUploadingData, isCreating, isEditing);
   }
   function onError() {
     //console.log(errors);
@@ -141,7 +144,7 @@ function CreateCabinForm({ cabin = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" onClick={() => onClose?.()}>
           Cancel
         </Button>
         <Button disabled={isUploadingData}>
