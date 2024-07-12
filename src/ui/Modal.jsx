@@ -66,6 +66,8 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
+//////////////////////////////////////////////////////////////////////////////
+
 export default function Modal({ children, onClose }) {
   return createPortal(
     <DivBGBlur>
