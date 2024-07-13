@@ -2,6 +2,67 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HiXMark } from "react-icons/hi2";
 import { createPortal } from "react-dom";
+import { cloneElement, createContext, useContext, useState } from "react";
+
+const ModalContext = createContext();
+
+//-------------------------------
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default function Modal({ children }) {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const open = () => {
+    setIsOpenModal(true);
+  };
+  const close = () => {
+    setIsOpenModal(false);
+  };
+  return (
+    <ModalContext.Provider value={{ isOpenModal, setIsOpenModal, open, close }}>
+      <div>{children}</div>
+    </ModalContext.Provider>
+  );
+}
+
+//-----------------------------
+Open.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+function Open({ children }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open() });
+}
+
+//--------------------------------
+Window.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+function Window({ children }) {
+  const { close, isOpenModal } = useContext(ModalContext);
+
+  if (!isOpenModal) return null;
+
+  return createPortal(
+    <DivBGBlur>
+      <StyledModal>
+        <ButtonCloseModal onClick={() => close()}>
+          <HiXMark />
+        </ButtonCloseModal>
+        {children}
+      </StyledModal>
+    </DivBGBlur>,
+    document.body
+  );
+}
+
+Modal.Open = Open;
+Modal.Window = Window;
+
+/////////////////////////////////////////////////////////////////////
 
 const DivBGBlur = styled.div`
   position: absolute;
@@ -60,24 +121,3 @@ const ButtonCloseModal = styled.button`
     background-color: var(--color-grey-300);
   }
 `;
-
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-//////////////////////////////////////////////////////////////////////////////
-
-export default function Modal({ children, onClose }) {
-  return createPortal(
-    <DivBGBlur>
-      <StyledModal>
-        <ButtonCloseModal onClick={() => onClose?.()}>
-          <HiXMark />
-        </ButtonCloseModal>
-        {children}
-      </StyledModal>
-    </DivBGBlur>,
-    document.body
-  );
-}
