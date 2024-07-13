@@ -12,47 +12,51 @@ Modal.propTypes = {
 };
 
 export default function Modal({ children }) {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [openName, setIsOpenName] = useState("");
 
-  const open = () => {
-    setIsOpenModal(true);
-  };
+  const open = setIsOpenName;
   const close = () => {
-    setIsOpenModal(false);
+    setIsOpenName("");
   };
   return (
-    <ModalContext.Provider value={{ isOpenModal, setIsOpenModal, open, close }}>
-      <div>{children}</div>
+    <ModalContext.Provider value={{ openName, setIsOpenName, open, close }}>
+      {children}
     </ModalContext.Provider>
   );
 }
 
 //-----------------------------
 Open.propTypes = {
-  children: PropTypes.node.isRequired,
+  opens: PropTypes.string,
+  children: PropTypes.node,
 };
-function Open({ children }) {
+function Open({ children, opens: windowToOpen }) {
   const { open } = useContext(ModalContext);
 
-  return cloneElement(children, { onClick: () => open() });
+  return cloneElement(children, { onClick: () => open(windowToOpen) });
 }
 
 //--------------------------------
 Window.propTypes = {
-  children: PropTypes.node.isRequired,
+  name: PropTypes.string,
+  children: PropTypes.node,
 };
-function Window({ children }) {
-  const { close, isOpenModal } = useContext(ModalContext);
+function Window({ children, name }) {
+  const { close, openName, setIsOpenName } = useContext(ModalContext);
 
-  if (!isOpenModal) return null;
+  if (name !== openName) return null;
+
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+  };
 
   return createPortal(
-    <DivBGBlur>
-      <StyledModal>
+    <DivBGBlur onClick={() => setIsOpenName("")}>
+      <StyledModal onClick={handleModalClick}>
         <ButtonCloseModal onClick={() => close()}>
           <HiXMark />
         </ButtonCloseModal>
-        {children}
+        <div>{cloneElement(children, { onClose: close })}</div>
       </StyledModal>
     </DivBGBlur>,
     document.body
