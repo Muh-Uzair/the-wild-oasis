@@ -9,6 +9,8 @@ const StyledConfirmDelete = styled.div`
   flex-direction: column;
   gap: 1.2rem;
   padding: 20px;
+  background-color: white;
+  border-radius: 8px;
 
   & p {
     color: var(--color-grey-500);
@@ -24,7 +26,7 @@ const StyledConfirmDelete = styled.div`
 
 ConfirmDelete.propTypes = {
   resourceName: PropTypes.string,
-  disabled: PropTypes.string,
+  disabled: PropTypes.bool,
   onConfirm: PropTypes.func,
   onClose: PropTypes.func,
 };
