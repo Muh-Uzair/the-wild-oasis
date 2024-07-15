@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
@@ -38,14 +38,15 @@ const FilterButton = styled.button`
 /////////////////////////////////////////////////////////////////////////////////
 export default function CabinTableOperations() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeButton, setActiveButton] = useState(
-    searchParams.get("discount") ? searchParams.get("discount") : "all"
-  );
+
+  let activeButton = searchParams.get("discount")
+    ? searchParams.get("discount")
+    : "all";
 
   function buttonClick(value) {
     searchParams.set("discount", value);
     setSearchParams(searchParams);
-    setActiveButton(value);
+    activeButton = value;
   }
 
   return (
