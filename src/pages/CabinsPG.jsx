@@ -3,6 +3,7 @@ import { Heading } from "../ui/Heading";
 import CabinTable from "../features/cabins/CabinTable";
 import styled from "styled-components";
 import AddCabin from "../features/cabins/AddCabin";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
 
 const Div = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export default function CabinsPG() {
     <Div>
       <Row type="horizontal">
         <Heading as="h1">All Cabins</Heading>
-        <span>Filter/Text</span>
+        <CabinTableOperations />
       </Row>
 
       <Row type="vertical">
