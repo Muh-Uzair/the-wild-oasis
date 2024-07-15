@@ -9,6 +9,7 @@ import useCreateCabin from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
 
 // const TableRow = styled.div`
 //   display: grid;
@@ -95,24 +96,32 @@ export default function CabinRow({ cabin }) {
         <Price>{formatCurrency(regularPrice)}</Price>
         <Discount>{discount > 0 ? formatCurrency(discount) : "-"}</Discount>
         <DivAllBtns>
-          <button onClick={() => handleDuplicateCabin()}>
-            <HiSquare2Stack />{" "}
-          </button>
           <Modal>
-            <Modal.Open opens="edit-form">
-              <button>
-                <HiPencil />
-              </button>
-            </Modal.Open>
+            <Menus.Menu>
+              <Menus.Toggle id={cabinId} />
+
+              <Menus.List id={cabinId}>
+                <Menus.Button
+                  icon={<HiSquare2Stack />}
+                  onClick={() => handleDuplicateCabin()}
+                >
+                  Duplicate
+                </Menus.Button>
+
+                <Modal.Open opens="edit-form">
+                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                </Modal.Open>
+
+                <Modal.Open opens="delete-confirm">
+                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                </Modal.Open>
+              </Menus.List>
+            </Menus.Menu>
+
             <Modal.Window name="edit-form">
               <CreateCabinForm cabin={cabin} />
             </Modal.Window>
 
-            <Modal.Open opens="delete-confirm">
-              <button>
-                <HiTrash />
-              </button>
-            </Modal.Open>
             <Modal.Window name="delete-confirm">
               <ConfirmDelete
                 resourceName={"cabins"}

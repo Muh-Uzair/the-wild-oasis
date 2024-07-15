@@ -45,7 +45,7 @@ function TableRow({ children }) {
 
 //---------------------------------------------
 TableBody.propTypes = {
-  cabins: PropTypes.object,
+  cabins: PropTypes.array,
   render: PropTypes.func,
 };
 function TableBody({ cabins, render }) {
