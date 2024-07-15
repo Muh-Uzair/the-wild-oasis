@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import PropTypes from "prop-types";
 
 const ButtonsContainer = styled.div`
   background-color: #ffffff;
@@ -36,22 +37,33 @@ const FilterButton = styled.button`
 `;
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-export default function CabinTableOperations() {
+
+CabinTableOperations.propTypes = {
+  paramsValue: PropTypes.string,
+  buttonsArray: PropTypes.array,
+  initialBtnValue: PropTypes.string,
+};
+
+export default function CabinTableOperations({
+  paramsValue,
+  buttonsArray,
+  initialBtnValue,
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  let activeButton = searchParams.get("discount")
-    ? searchParams.get("discount")
-    : "all";
+  let activeButton = searchParams.get(paramsValue)
+    ? searchParams.get(paramsValue)
+    : initialBtnValue;
 
   function buttonClick(value) {
-    searchParams.set("discount", value);
+    searchParams.set(paramsValue, value);
     setSearchParams(searchParams);
     activeButton = value;
   }
 
   return (
     <ButtonsContainer>
-      <FilterButton
+      {/* <FilterButton
         active={activeButton === "all" ? "true" : ""}
         value="all"
         onClick={(e) => buttonClick(e.target.value)}
@@ -71,7 +83,23 @@ export default function CabinTableOperations() {
         onClick={(e) => buttonClick(e.target.value)}
       >
         With Discount
-      </FilterButton>
+      </FilterButton> */}
+
+      {buttonsArray.map((btnObj) => (
+        <FilterButton
+          active={activeButton === `${btnObj.value}` ? "true" : ""}
+          value={`${btnObj.value}`}
+          key={`${btnObj.value}`}
+          onClick={(e) => buttonClick(e.target.value)}
+        >
+          {`${btnObj.label}`}
+        </FilterButton>
+      ))}
     </ButtonsContainer>
   );
 }
+
+// 1 : params value : string
+// 2 : amount of buttons : array of objects
+// 3 : value of button
+// 4 : label of button
