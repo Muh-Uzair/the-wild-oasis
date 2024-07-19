@@ -1,105 +1,48 @@
-// import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import PropTypes from "prop-types";
+import styled from "styled-components";
+import Filter from "../../ui/Filter";
+import SortBy from "../../ui/SortBy";
 
-const ButtonsContainer = styled.div`
-  background-color: #ffffff;
+const StyledTableOperations = styled.div`
   display: flex;
-  font-weight: 500;
-
-  padding: 7px;
-  border-radius: 5px;
+  gap: 10px;
 `;
 
-const FilterButton = styled.button`
-  background-color: var(--color-grey-0);
-  border: none;
-
-  ${(props) =>
-    props.active &&
-    css`
-      background-color: var(--color-brand-600);
-      color: var(--color-brand-50);
-    `}
-
-  border-radius: var(--border-radius-sm);
-  font-weight: 500;
-  font-size: 1.4rem;
-  /* To give the same height as select */
-  padding: 0.44rem 0.8rem;
-  transition: all 0.3s;
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-brand-600);
-    color: var(--color-brand-50);
-  }
-`;
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-
-CabinTableOperations.propTypes = {
-  paramsValue: PropTypes.string,
-  buttonsArray: PropTypes.array,
-  initialBtnValue: PropTypes.string,
-};
-
-export default function CabinTableOperations({
-  paramsValue,
-  buttonsArray,
-  initialBtnValue,
-}) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  let activeButton = searchParams.get(paramsValue)
-    ? searchParams.get(paramsValue)
-    : initialBtnValue;
-
-  function buttonClick(value) {
-    searchParams.set(paramsValue, value);
-    setSearchParams(searchParams);
-    activeButton = value;
-  }
-
+export default function CabinTableOperations() {
   return (
-    <ButtonsContainer>
-      {/* <FilterButton
-        active={activeButton === "all" ? "true" : ""}
-        value="all"
-        onClick={(e) => buttonClick(e.target.value)}
-      >
-        All
-      </FilterButton>
-      <FilterButton
-        active={activeButton === "no-discount" ? "true" : ""}
-        value="no-discount"
-        onClick={(e) => buttonClick(e.target.value)}
-      >
-        No Discount
-      </FilterButton>
-      <FilterButton
-        active={activeButton === "with-discount" ? "true" : ""}
-        value="with-discount"
-        onClick={(e) => buttonClick(e.target.value)}
-      >
-        With Discount
-      </FilterButton> */}
-
-      {buttonsArray.map((btnObj) => (
-        <FilterButton
-          active={activeButton === `${btnObj.value}` ? "true" : ""}
-          value={`${btnObj.value}`}
-          key={`${btnObj.value}`}
-          onClick={(e) => buttonClick(e.target.value)}
-        >
-          {`${btnObj.label}`}
-        </FilterButton>
-      ))}
-    </ButtonsContainer>
+    <StyledTableOperations>
+      <Filter
+        paramsValue={"discount"}
+        buttonsArray={[
+          { value: "all", label: "All" },
+          { value: "no-discount", label: "No Discount" },
+          { value: "with-discount", label: "With Discount" },
+        ]}
+        initialBtnValue="all"
+      />
+      <SortBy
+        selectOptions={[
+          { value: "name-asc", label: "Sort by name (A-Z)" },
+          { value: "name-dsc", label: "Sort by name (Z-A)" },
+          {
+            value: "regularPrice-asc",
+            label: "Sort by price (low first)",
+          },
+          {
+            value: "regularPrice-dsc",
+            label: "Sort by price (high first)",
+          },
+          {
+            value: "maxCapacity-asc",
+            label: "Sort by capacity (low first)",
+          },
+          {
+            value: "maxCapacity-dsc",
+            label: "Sort by capacity (high first)",
+          },
+        ]}
+        initialValue="name-asc"
+        type="white"
+      />
+    </StyledTableOperations>
   );
 }
-
-// 1 : params value : string
-// 2 : amount of buttons : array of objects
-// 3 : value of button
-// 4 : label of button

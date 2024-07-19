@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
+import PropTypes from "prop-types";
 
-import Tag from "../../ui/Tag";
+// import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
@@ -34,26 +35,29 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  booking: {
-    id: bookingId,
-    created_at,
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+BookingRow.propTypes = {
+  booking: PropTypes.object,
+};
+
+function BookingRow({ booking }) {
+  // const statusToTagName = {
+  //   unconfirmed: "blue",
+  //   "checked-in": "green",
+  //   "checked-out": "silver",
+  // };
+
+  const {
+    cabinName,
+    guestName,
+    email,
+    numNights,
     startDate,
     endDate,
-    numNights,
-    numGuests,
     totalPrice,
-    status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
-
+  } = booking;
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -76,7 +80,7 @@ function BookingRow({
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      {/* <Tag type={statusToTagName[{status === null ? "unconfirmed" : status}]}>{status.replace("-", " ")}</Tag> */}
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
     </Table.Row>

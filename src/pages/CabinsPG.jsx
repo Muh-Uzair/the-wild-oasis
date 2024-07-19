@@ -17,15 +17,7 @@ export default function CabinsPG() {
     <Div>
       <Row type="horizontal">
         <Heading as="h1">All Cabins</Heading>
-        <CabinTableOperations
-          paramsValue={"discount"}
-          buttonsArray={[
-            { value: "all", label: "All" },
-            { value: "no-discount", label: "No Discount" },
-            { value: "with-discount", label: "With Discount" },
-          ]}
-          initialBtnValue="all"
-        />
+        <CabinTableOperations />
       </Row>
 
       <Row type="vertical">
