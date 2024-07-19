@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { format, isToday } from "date-fns";
 import PropTypes from "prop-types";
 
-// import Tag from "../../ui/Tag";
+import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
@@ -43,47 +43,47 @@ BookingRow.propTypes = {
 };
 
 function BookingRow({ booking }) {
-  // const statusToTagName = {
-  //   unconfirmed: "blue",
-  //   "checked-in": "green",
-  //   "checked-out": "silver",
-  // };
+  const { cabins, guests, numNights, startDate, endDate, totalPrice, status } =
+    booking;
+  const { name: cabinName } = cabins;
+  const { email, fullName: guestName } = guests;
 
-  const {
-    cabinName,
-    guestName,
-    email,
-    numNights,
-    startDate,
-    endDate,
-    totalPrice,
-  } = booking;
+  const statusToTagName = {
+    unconfirmed: "blue",
+    "checked-in": "green",
+    "checked-out": "silver",
+  };
+
   return (
-    <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+    <>
+      <Table.TableRow>
+        <Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
-      </Stacked>
+        <Stacked>
+          <span>{guestName}</span>
+          <span>{email}</span>
+        </Stacked>
 
-      <Stacked>
-        <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
-        </span>
-        <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
-        </span>
-      </Stacked>
+        <Stacked>
+          <span>
+            {isToday(new Date(startDate))
+              ? "Today"
+              : formatDistanceFromNow(startDate)}{" "}
+            &rarr; {numNights} night stay
+          </span>
+          <span>
+            {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
+            {format(new Date(endDate), "MMM dd yyyy")}
+          </span>
+        </Stacked>
 
-      {/* <Tag type={statusToTagName[{status === null ? "unconfirmed" : status}]}>{status.replace("-", " ")}</Tag> */}
+        <Tag type={statusToTagName[status === null ? "unconfirmed" : status]}>
+          {status?.replace("-", " ")}
+        </Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
-    </Table.Row>
+        <Amount>{formatCurrency(totalPrice)}</Amount>
+      </Table.TableRow>
+    </>
   );
 }
 

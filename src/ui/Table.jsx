@@ -2,64 +2,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { createContext, useContext } from "react";
 
-const TableContext = createContext();
-
-//--------------------------------------------
-Table.propTypes = {
-  children: PropTypes.node.isRequired,
-  columns: PropTypes.string,
-};
-export default function Table({ children, columns }) {
-  return (
-    <TableContext.Provider value={{ columns }}>
-      <StyledTable role={"table"}>{children}</StyledTable>
-    </TableContext.Provider>
-  );
-}
-
-//---------------------------------------------
-TableHeader.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-function TableHeader({ children }) {
-  const { columns } = useContext(TableContext);
-  return (
-    <StyledHeader role="header" columns={columns} as={"header"}>
-      {children}
-    </StyledHeader>
-  );
-}
-
-//---------------------------------------------
-TableRow.propTypes = {
-  children: PropTypes.node,
-};
-function TableRow({ children }) {
-  const { columns } = useContext(TableContext);
-  return (
-    <StyledRow role={"row"} columns={columns}>
-      {children}
-    </StyledRow>
-  );
-}
-
-//---------------------------------------------
-TableBody.propTypes = {
-  cabins: PropTypes.array,
-  render: PropTypes.func,
-};
-function TableBody({ cabins, render }) {
-  if (!cabins.length) return <Empty>No cabins at the moment</Empty>;
-  return <StyledBody>{cabins.map(render)}</StyledBody>;
-}
-
-Table.TableHeader = TableHeader;
-Table.TableRow = TableRow;
-Table.TableBody = TableBody;
-
-/////////////////////////////////////////////////
-////////////////////////////////////////////////
-
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
 
@@ -118,3 +60,61 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+///////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+const TableContext = createContext();
+
+//--------------------------------------------
+Table.propTypes = {
+  children: PropTypes.node,
+  columns: PropTypes.string,
+};
+export default function Table({ children, columns }) {
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable role={"table"}>{children}</StyledTable>
+    </TableContext.Provider>
+  );
+}
+
+//---------------------------------------------
+TableHeader.propTypes = {
+  children: PropTypes.node,
+};
+function TableHeader({ children }) {
+  const { columns } = useContext(TableContext);
+  return (
+    <StyledHeader role="header" columns={`${columns}`} as={"header"}>
+      {children}
+    </StyledHeader>
+  );
+}
+
+//---------------------------------------------
+TableRow.propTypes = {
+  children: PropTypes.node,
+};
+function TableRow({ children }) {
+  const { columns } = useContext(TableContext);
+  return (
+    <StyledRow role={"row"} columns={columns}>
+      {children}
+    </StyledRow>
+  );
+}
+
+//---------------------------------------------
+TableBody.propTypes = {
+  data: PropTypes.array,
+  render: PropTypes.func,
+};
+function TableBody({ data, render }) {
+  if (!data?.length) return <Empty>No cabins at the moment</Empty>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
+}
+
+Table.TableHeader = TableHeader;
+Table.TableRow = TableRow;
+Table.TableBody = TableBody;

@@ -82,7 +82,7 @@ export default function CabinTable() {
           <div></div>
         </Table.TableHeader>
         <Table.TableBody
-          cabins={sortedCabins}
+          data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         ></Table.TableBody>
 
