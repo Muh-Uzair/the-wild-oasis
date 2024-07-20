@@ -5,9 +5,10 @@ import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 import Spinner from "../../ui/Spinner";
 import { useGetBookings } from "./getBookings";
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
-  const { allBookings, status } = useGetBookings();
+  const { allBookings, status, count } = useGetBookings();
 
   if (status === "pending") return <Spinner />;
 
@@ -32,6 +33,10 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+
+        <Table.Footer>
+          <Pagination totalResults={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

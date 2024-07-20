@@ -1,5 +1,6 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
+import { TOTAL_RESULTS_ON_PAGE } from "../utils/constants";
 
 export async function getBooking(id) {
   const { data, error } = await supabase
@@ -16,19 +17,43 @@ export async function getBooking(id) {
   return data;
 }
 
-export async function getAllBookings() {
-  const { data, error } = await supabase
+export async function getAllBookings(filterByObj, sortByObj, currentPage) {
+  let query = supabase
     .from("bookings")
     .select(
-      "id , created_at , startDate , endDate , numNights , numGuests , status , totalPrice , cabins(name) , guests(fullName , email)"
+      "id , created_at , startDate , endDate , numNights , numGuests , status , totalPrice , cabins(name) , guests(fullName , email)",
+      { count: "exact" }
     );
+
+  // filter logic
+  if (filterByObj !== null)
+    query = query[filterByObj.method](
+      filterByObj.field,
+      filterByObj.filterValue
+    );
+
+  // sort logic
+  if (sortByObj !== null)
+    query = query.order(sortByObj.field, {
+      ascending: sortByObj.direction === "asc",
+    });
+
+  // pagination logic
+  if (currentPage) {
+    const from = (currentPage - 1) * TOTAL_RESULTS_ON_PAGE;
+    const to = from + TOTAL_RESULTS_ON_PAGE - 1;
+
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Unable to load all bookings");
   }
 
-  return data;
+  return { data, count };
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.

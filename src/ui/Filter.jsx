@@ -59,7 +59,7 @@ export default function Filter({ paramsValue, buttonsArray, initialBtnValue }) {
 
   return (
     <ButtonsContainer>
-      {buttonsArray.map((btnObj) => (
+      {buttonsArray?.map((btnObj) => (
         <FilterButton
           active={activeButton === `${btnObj.value}` ? "true" : ""}
           value={`${btnObj.value}`}

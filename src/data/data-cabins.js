@@ -2,6 +2,9 @@ import { supabaseUrl } from "../services/supabase";
 
 const imageUrl = `${supabaseUrl}/storage/v1/object/public/cabin-images/`;
 
+//https://adblcxcghegkjycpllmw.supabase.co/storage/v1/object/public/cabinsImages/cabin-008.jpg
+//https://adblcxcghegkjycpllmw.supabase.co/storage/v1/object/public/cabinsImages/cabin-003.jpg?t=2024-07-19T07%3A28%3A10.784Z
+
 export const cabins = [
   {
     name: "001",
@@ -26,7 +29,7 @@ export const cabins = [
     maxCapacity: 4,
     regularPrice: 300,
     discount: 0,
-    image: imageUrl + "cabin-003.jpg",
+    image: imageUrl + "cabin_003.jpg",
     description:
       "Experience luxury family living in our medium-sized wooden cabin 003. Perfect for families of up to 4 people, this cabin offers a comfortable and inviting space with all modern amenities. Inside, you will find warm and inviting interiors crafted from high-quality wood, a comfortable living area, a fireplace, and a fully-equipped kitchen. The bedrooms feature plush beds and spa-like bathrooms. The cabin has a private deck with a hot tub and outdoor seating area, perfect for taking in the natural surroundings.",
   },
