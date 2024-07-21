@@ -6,6 +6,7 @@ import {
   HiOutlineCurrencyDollar,
   HiOutlineHomeModern,
 } from "react-icons/hi2";
+import PropTypes from "prop-types";
 
 import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
@@ -101,8 +102,14 @@ const Footer = styled.footer`
   text-align: right;
 `;
 
+BookingDataBox.propTypes = {
+  bookingData: PropTypes.object,
+};
+
 // A purely presentational component
-function BookingDataBox({ booking }) {
+// COMPONENT START///////////////////////////////////////////////
+function BookingDataBox({ bookingData }) {
+  // STATE & VARIABLES
   const {
     created_at,
     startDate,
@@ -117,8 +124,9 @@ function BookingDataBox({ booking }) {
     isPaid,
     guests: { fullName: guestName, email, country, countryFlag, nationalID },
     cabins: { name: cabinName },
-  } = booking;
+  } = bookingData;
 
+  // JSX//////////////////////////////////////////
   return (
     <StyledBookingDataBox>
       <Header>
@@ -183,5 +191,6 @@ function BookingDataBox({ booking }) {
     </StyledBookingDataBox>
   );
 }
+// COMPONENT END/////////////////////////////////////////////////
 
 export default BookingDataBox;

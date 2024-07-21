@@ -2,7 +2,7 @@ import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useSearchParams } from "react-router-dom";
-import { TOTAL_RESULTS_ON_PAGE } from "../utils/constants";
+import { TOTAL_RESULTS_ON_PAGE, calculateTotalPages } from "../utils/constants";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -76,8 +76,8 @@ export default function Pagination({ totalResults }) {
     ? Number(searchParams.get("currPage"))
     : 1;
 
-  // 3 : total page would be equal to when we divide total results by 10
-  const totalPages = Math.ceil(totalResults / TOTAL_RESULTS_ON_PAGE);
+  // 3 : total pageS would be equal to when we divide total results by 10
+  const totalPages = calculateTotalPages(totalResults);
 
   // 4 : logic for moving to prev age
   function movePrevPage() {

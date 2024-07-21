@@ -66,7 +66,7 @@ const StyledButton = styled.button`
   }
 `;
 
-/////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
 const MenusContext = createContext();
@@ -115,7 +115,7 @@ export default function Menus({ children }) {
 
 //-----------------------------------
 Toggle.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.number,
 };
 function Toggle({ id }) {
   const { isOpenId, close, open, setMenuPosition } = useContext(MenusContext);
@@ -155,7 +155,7 @@ function List({ id, children }) {
 
 //-----------------------------------
 Button.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   onClick: PropTypes.func,
   icon: PropTypes.node.isRequired,
 };

@@ -12,6 +12,7 @@ import AppLayout from "./ui/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import BookingDetailsPG from "./pages/BookingDetailsPG";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,7 +22,9 @@ const queryClient = new QueryClient({
   },
 });
 
+// COMPONENT START///////////////////////////////////////////////
 export default function App() {
+  // JSX//////////////////////////////////////////
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
@@ -32,6 +35,7 @@ export default function App() {
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<DashboardPG />} />
             <Route path="bookings" element={<BookingsPG />} />
+            <Route path="bookings/:id" element={<BookingDetailsPG />} />
             <Route path="cabins" element={<CabinsPG />} />
             <Route path="users" element={<UsersPG />} />
             <Route path="settings" element={<SettingsPG />} />
@@ -65,4 +69,6 @@ export default function App() {
       />
     </QueryClientProvider>
   );
+  // JSX//////////////////////////////////////////
 }
+// COMPONENT END/////////////////////////////////////////////////
