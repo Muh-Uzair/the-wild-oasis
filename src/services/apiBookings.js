@@ -110,6 +110,17 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
+export async function deleteBooking(id) {
+  // REMEMBER RLS POLICIES
+  const { data, error } = await supabase.from("bookings").delete().eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+  return data;
+}
+
 export async function updateBooking(id, obj) {
   const { data, error } = await supabase
     .from("bookings")
@@ -125,13 +136,12 @@ export async function updateBooking(id, obj) {
   return data;
 }
 
-export async function deleteBooking(id) {
-  // REMEMBER RLS POLICIES
-  const { data, error } = await supabase.from("bookings").delete().eq("id", id);
+export async function updateBookingStatus(id, updatedObj) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(updatedObj)
+    .eq("id", id)
+    .select();
 
-  if (error) {
-    console.error(error);
-    throw new Error("Booking could not be deleted");
-  }
-  return data;
+  return { data, error };
 }

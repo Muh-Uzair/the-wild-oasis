@@ -7,9 +7,11 @@ import {
   HiOutlineHomeModern,
 } from "react-icons/hi2";
 import PropTypes from "prop-types";
+import MyFlag from "react-world-flags";
+import { getCode as getCountryCode } from "country-list";
 
 import DataItem from "../../ui/DataItem";
-import { Flag } from "../../ui/Flag";
+// import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
 
@@ -122,7 +124,7 @@ function BookingDataBox({ bookingData }) {
     hasBreakfast,
     observations,
     isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
+    guests: { fullName: guestName, email, nationality: country, nationalID },
     cabins: { name: cabinName },
   } = bookingData;
 
@@ -148,7 +150,11 @@ function BookingDataBox({ bookingData }) {
 
       <Section>
         <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
+          {/* {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />} */}
+          <MyFlag
+            style={{ width: "20px", height: "20px" }}
+            code={getCountryCode(country ? country : "Pakistan")}
+          />
           <p>
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>

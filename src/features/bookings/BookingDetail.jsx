@@ -11,6 +11,7 @@ import ButtonText from "../../ui/ButtonText";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import useGetBookingDetail from "./useGetBookingDetail";
 import Spinner from "../../ui/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -18,9 +19,16 @@ const HeadingGroup = styled.div`
   align-items: center;
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 // COMPONENT START///////////////////////////////////////////////
 function BookingDetail() {
   // STATE & VARIABLES
+  const navigate = useNavigate();
 
   // status tags checked in etc
   const statusToTagName = {
@@ -39,25 +47,32 @@ function BookingDetail() {
   // JSX//////////////////////////////////////////
   if (isLoading && !isError) return <Spinner />;
 
-  return (
-    <>
-      <Row type="horizontal">
-        <HeadingGroup>
-          <Heading as="h1">Booking #{bookingId}</Heading>
-          <Tag type={statusToTagName[status]}>{status?.replace("-", " ")}</Tag>
-        </HeadingGroup>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-      </Row>
+  if (bookingData) {
+    return (
+      <StyledDiv>
+        <Row type="horizontal">
+          <HeadingGroup>
+            <Heading as="h1">Booking #{bookingId}</Heading>
+            <Tag type={statusToTagName[status]}>
+              {status?.replace("-", " ")}
+            </Tag>
+          </HeadingGroup>
+          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        </Row>
 
-      <BookingDataBox bookingData={bookingData} />
+        <BookingDataBox bookingData={bookingData} />
 
-      <ButtonGroup>
-        <Button variation="secondary" onClick={moveBack}>
-          Back
-        </Button>
-      </ButtonGroup>
-    </>
-  );
+        <ButtonGroup>
+          <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
+            Check in
+          </Button>
+          <Button variation="secondary" onClick={moveBack}>
+            Back
+          </Button>
+        </ButtonGroup>
+      </StyledDiv>
+    );
+  }
   // JSX//////////////////////////////////////////
 }
 // COMPONENT END/////////////////////////////////////////////////
