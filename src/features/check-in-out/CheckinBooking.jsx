@@ -34,7 +34,7 @@ const StyledDiv = styled.div`
 function CheckinBooking() {
   // STATE & VARIABLES
   const { bookingData = {}, isLoading, isError } = useGetBookingDetail();
-  console.log(bookingData);
+  // console.log(bookingData);
   const {
     id: bookingId,
     guests: guestData = {},
@@ -46,13 +46,27 @@ function CheckinBooking() {
   const [confirmCheckIn, setConfirmCheckIn] = useState("");
   const { mutateCheckin, isCheckingIn } = useConfirmCheckin();
   const [addBreakfast, setAddBreakfast] = useState("");
-  const { settingsData } = useSettings();
-  console.log(settingsData);
+  const { settingsData = {}, isLoadingSettings } = useSettings();
+  // console.log(settingsData);
   const optionalBreakFastPrice =
     settingsData?.breakfastPrice * numNights * numGuests;
+
   // FUNCTIONS
   function handleCheckin() {
-    mutateCheckin(bookingId);
+    if (!confirmCheckIn) return;
+
+    if (!addBreakfast) {
+      mutateCheckin({ bookingId, breakfastObj: {} });
+    } else if (addBreakfast) {
+      mutateCheckin({
+        bookingId,
+        breakfastObj: {
+          hasBreakfast: true,
+          extrasPrice: optionalBreakFastPrice,
+          totalPrice: totalPrice + optionalBreakFastPrice,
+        },
+      });
+    }
   }
 
   const moveBack = useMoveBack();
@@ -63,7 +77,7 @@ function CheckinBooking() {
   // console.log(bookingData);
 
   // JSX//////////////////////////////////////////
-  if (isLoading && !isError) return <Spinner />;
+  if ((isLoading && !isError) || isLoadingSettings) return <Spinner />;
 
   if (bookingData && Object.keys(bookingData).length > 0) {
     return (
@@ -95,7 +109,13 @@ function CheckinBooking() {
             disabled={confirmCheckIn || isCheckingIn}
           >
             I confirm that {guestFullName} has paid the total amount of{" "}
-            {formatCurrency(totalPrice)}
+            {!addBreakfast
+              ? formatCurrency(totalPrice)
+              : `${formatCurrency(
+                  totalPrice + optionalBreakFastPrice
+                )} (${formatCurrency(totalPrice)} + ${formatCurrency(
+                  optionalBreakFastPrice
+                )} )`}
           </Checkbox>
         </Box>
 

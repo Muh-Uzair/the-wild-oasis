@@ -3,16 +3,22 @@ import { updateBookingStatus } from "../../services/apiBookings";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+// FUNCTIONS
 function useConfirmCheckin() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate: mutateCheckin, isLoading: isCheckingIn } = useMutation({
-    mutationFn: (bookingId) =>
-      updateBookingStatus(bookingId, { status: "checked-in", isPaid: true }),
+  const x = useMutation({
+    mutationFn: ({ bookingId, breakfastObj }) =>
+      updateBookingStatus(bookingId, {
+        status: "checked-in",
+        isPaid: true,
+        ...breakfastObj,
+      }),
 
     onSuccess: (data) => {
-      toast.success(`Booking #${data.id} successfully checked in`);
+      // console.log(data);
+      toast.success(`Booking #${data.data.id} successfully checked in`);
       queryClient.invalidateQueries({ active: true });
       navigate("/");
     },
@@ -21,6 +27,8 @@ function useConfirmCheckin() {
       toast.error("Unable to update booking");
     },
   });
+
+  const { mutate: mutateCheckin, isLoading: isCheckingIn } = x;
 
   return { mutateCheckin, isCheckingIn };
 }

@@ -45,18 +45,24 @@ Filter.propTypes = {
 };
 
 export default function Filter({ paramsValue, buttonsArray, initialBtnValue }) {
+  // STATE & VARIABLES
   const [searchParams, setSearchParams] = useSearchParams();
 
   let activeButton = searchParams.get(paramsValue)
     ? searchParams.get(paramsValue)
     : initialBtnValue;
 
+  // FUNCTIONS
   function buttonClick(value) {
     searchParams.set(paramsValue, value);
+    if (searchParams.get("currPage")) searchParams.set("currPage", 1);
+
     setSearchParams(searchParams);
+
     activeButton = value;
   }
 
+  // JSX//////////////////////////////////////////
   return (
     <ButtonsContainer>
       {buttonsArray?.map((btnObj) => (
