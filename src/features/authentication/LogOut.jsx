@@ -7,14 +7,23 @@ import SpinnerMini from "../../ui/SpinnerMini";
 export default function LogOut() {
   // STATE & VARIABLES
 
-  const { logout, isLogingOut } = useLogout();
+  const { logout, logingOutStatus } = useLogout();
+
+  // console.log(isLogingOut);
 
   // FUNCTIONS
 
   // JSX//////////////////////////////////////////
   return (
-    <ButtonIcon disabled={isLogingOut} onClick={() => logout()}>
-      {isLogingOut ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
+    <ButtonIcon
+      disabled={logingOutStatus === "pending"}
+      onClick={() => logout()}
+    >
+      {logingOutStatus === "pending" ? (
+        <SpinnerMini />
+      ) : (
+        <HiArrowRightOnRectangle />
+      )}
     </ButtonIcon>
   );
   // JSX//////////////////////////////////////////

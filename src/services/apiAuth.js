@@ -23,7 +23,9 @@ export async function getCurrentUser() {
 }
 
 export async function apiLogout() {
-  let { error } = await supabase.auth.signOut();
+  let x = await supabase.auth.signOut();
+
+  let { error } = x;
 
   if (error) throw new Error(error.message);
 }
