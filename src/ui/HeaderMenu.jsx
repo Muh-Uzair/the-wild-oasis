@@ -3,9 +3,11 @@ import ButtonIcon from "../ui/ButtonIcon";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineUser } from "react-icons/hi2";
 import LogOut from "../features/authentication/LogOut";
+import UserAvatar from "../features/authentication/UserAvatar";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -19,6 +21,9 @@ export default function HeaderMenu() {
   // JSX//////////////////////////////////////////
   return (
     <StyledHeaderMenu>
+      <li>
+        <UserAvatar />
+      </li>
       <li>
         <ButtonIcon onClick={() => navigate("/account")}>
           <HiOutlineUser />

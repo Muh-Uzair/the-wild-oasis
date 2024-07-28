@@ -1,38 +1,35 @@
-// import styled from "styled-components";
-
+import styled from "styled-components";
 import { useUser } from "./useUser";
 
-// const StyledUserAvatar = styled.div`
-//   display: flex;
-//   gap: 1.2rem;
-//   align-items: center;
-//   font-weight: 500;
-//   font-size: 1.4rem;
-//   color: var(--color-grey-600);
-// `;
-
-// const Avatar = styled.img`
-//   display: block;
-//   width: 4rem;
-//   width: 3.6rem;
-//   aspect-ratio: 1;
-//   object-fit: cover;
-//   object-position: center;
-//   border-radius: 50%;
-//   outline: 2px solid var(--color-grey-100);
-// `;
+const DivNamePlusImg = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+const DivImg = styled.div`
+  width: 40px;
+  height: 40px;
+  background-color: red;
+  border-radius: 30px;
+`;
 
 // COMPONENT START///////////////////////////////////////////////
 export default function UserAvatar() {
   // STATE & VARIABLES
   const { userData } = useUser();
-
-  console.log(userData);
+  const { user_metadata } = userData;
 
   // FUNCTIONS
 
   // JSX//////////////////////////////////////////
-  return <div>avatar</div>;
+  return (
+    <DivNamePlusImg>
+      <DivImg>
+        <img src="src/data/img/default-user.jpg" alt="img" />
+      </DivImg>
+      <span>{user_metadata?.fullName}</span>
+    </DivNamePlusImg>
+  );
   // JSX//////////////////////////////////////////
 }
 // COMPONENT END/////////////////////////////////////////////////

@@ -7,8 +7,11 @@ import FormRow from "../../ui/FormRow";
 import { Input } from "../../ui/Input";
 
 import { useUser } from "./useUser";
+import { useUpdateCurrUserData } from "./useUpdateCurrUserData";
 
+// COMPONENT START///////////////////////////////////////////////
 function UpdateUserDataForm() {
+  // STATE & VARIABLES
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
   const {
     userData: {
@@ -16,16 +19,18 @@ function UpdateUserDataForm() {
       user_metadata: { fullName: currentFullName },
     },
   } = useUser();
-
   const [fullName, setFullName] = useState(currentFullName ?? "");
   const [avatar, setAvatar] = useState(null);
+  const { mutateUserData, updationStatus } = useUpdateCurrUserData();
 
+  // FUNCTIONS
   function handleSubmit(e) {
     e.preventDefault();
-
-    console.log(fullName, avatar);
+    if (!fullName) return;
+    mutateUserData({ fullName, avatar });
   }
 
+  // JSX//////////////////////////////////////////
   return (
     <Form onSubmit={(e) => handleSubmit(e)}>
       <FormRow label="Email address">
@@ -37,6 +42,7 @@ function UpdateUserDataForm() {
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           id="fullName"
+          disabled={updationStatus === "pending"}
         />
       </FormRow>
       <FormRow label="Avatar image">
@@ -44,13 +50,19 @@ function UpdateUserDataForm() {
           id="avatar"
           accept="image/*"
           onChange={(e) => setAvatar(e.target.files[0])}
+          disabled={updationStatus === "pending"}
         />
       </FormRow>
       <FormRow>
-        <Button type="reset" variation="secondary">
+        <Button
+          disabled={updationStatus === "pending"}
+          type="reset"
+          variation="secondary"
+        >
           Cancel
         </Button>
-        <Button>Update account</Button>
+
+        <Button disabled={updationStatus === "pending"}>Update account</Button>
       </FormRow>
     </Form>
   );

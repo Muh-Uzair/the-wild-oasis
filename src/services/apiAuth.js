@@ -60,3 +60,36 @@ export async function updateCurrentUser({ password, fullName, avatar }) {
   if (error2) throw new Error(error2.message);
   return updatedUser;
 }
+
+// avatar url : https://adblcxcghegkjycpllmw.supabase.co/storage/v1/object/public/avatars/AK-105-5.png?t=2024-07-27T10%3A14%3A35.427Z ;
+export async function updateCurrUserData({ fullName, avatar }) {
+  let updateObj;
+  if (fullName) updateObj = { data: { fullName } };
+
+  const { data: updatedUserData, error: updateError } =
+    await supabase.auth.updateUser(updateObj);
+
+  if (updateError) throw new Error(updateError.message);
+  if (!avatar) return updatedUserData;
+
+  let uploadImageName = `avatar-${updatedUserData.user.id}}-${Math.random()}`;
+
+  console.log(uploadImageName);
+  console.log(avatar);
+
+  const { error: storageError } = await supabase.storage
+    .from("avatars")
+    .upload(uploadImageName, avatar);
+
+  if (storageError) throw new Error(storageError.message);
+
+  const { data: updatedUserData2, error: updateError2 } =
+    await supabase.auth.updateUser({
+      data: {
+        avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${uploadImageName}`,
+      },
+    });
+
+  if (updateError2) throw new Error();
+  return updatedUserData2;
+}

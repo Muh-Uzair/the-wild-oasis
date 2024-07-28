@@ -1,5 +1,6 @@
 import supabase, { supabaseUrl } from "./supabase";
 
+// FUNCTIONS
 export async function getCabins() {
   let { data, error } = await supabase.from("cabins").select("*");
 

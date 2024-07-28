@@ -15,7 +15,9 @@ CreateCabinForm.propTypes = {
   onClose: PropTypes.func,
 };
 
+// COMPONENT START///////////////////////////////////////////////
 function CreateCabinForm({ cabin = {}, onClose }) {
+  // STATE & VARIABLES
   // taking value out of cabin that is received for editing and also ensuring
   // by using boolean function that wether the cabin received is for editing or not
   const { id: editId, ...editValues } = cabin;
@@ -31,6 +33,8 @@ function CreateCabinForm({ cabin = {}, onClose }) {
   const { editCabin, editingStatus } = useUpdateCabin();
   const isUploadingData =
     creatingStatus === "pending" || editingStatus === "pending";
+
+  // FUNCTIONS
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
@@ -60,6 +64,7 @@ function CreateCabinForm({ cabin = {}, onClose }) {
     //console.log(errors);
   }
 
+  // JSX//////////////////////////////////////////
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow label="Cabin name" error={errors?.name?.message}>
