@@ -9,8 +9,14 @@ const DivNamePlusImg = styled.div`
 const DivImg = styled.div`
   width: 40px;
   height: 40px;
-  background-color: red;
   border-radius: 30px;
+`;
+const ActualProfileIMg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 30px;
+  border: 1px solid gray;
 `;
 
 // COMPONENT START///////////////////////////////////////////////
@@ -25,7 +31,10 @@ export default function UserAvatar() {
   return (
     <DivNamePlusImg>
       <DivImg>
-        <img src="src/data/img/default-user.jpg" alt="img" />
+        <ActualProfileIMg
+          src={`${user_metadata?.avatar}` || `src/data/img/default-user.jpg`}
+          alt="img"
+        />
       </DivImg>
       <span>{user_metadata?.fullName}</span>
     </DivNamePlusImg>

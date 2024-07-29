@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledStat = styled.div`
   /* Box */
@@ -47,7 +48,20 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
+Stat.propTypes = {
+  icon: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  color: PropTypes.string.isRequired,
+};
+
+//COMPONENT START///////////////////////////////////////////////
 function Stat({ icon, title, value, color }) {
+  // STATE & VARIABLES
+
+  // FUNCTIONS
+
+  //JSX//////////////////////////////////////////
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>

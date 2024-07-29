@@ -2,7 +2,7 @@ import styled from "styled-components";
 import HeaderMenu from "./HeaderMenu";
 
 const StyledHeader = styled.div`
-  background-color: var(--color-grey-2);
+  background-color: var(--color-grey-50);
   padding: 20px 20px;
   border-bottom: 1px solid var(--color-grey-300);
 

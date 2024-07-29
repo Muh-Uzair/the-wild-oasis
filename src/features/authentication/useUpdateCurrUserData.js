@@ -10,10 +10,11 @@ export function useUpdateCurrUserData() {
     status: updationStatus,
   } = useMutation({
     mutationFn: updateCurrUserData,
-    onSuccess: ({ user: { user_metadata } }) => {
+    onSuccess: ({ user }) => {
       toast.success(
-        `User full name and avatar successfully updated to ${user_metadata?.fullName}`
+        `User full name and avatar successfully updated to ${user?.user_metadata?.fullName}`
       );
+      // queryClient.setQueryData(["user"], user);
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });

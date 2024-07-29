@@ -30,6 +30,11 @@ function UpdateUserDataForm() {
     mutateUserData({ fullName, avatar });
   }
 
+  function btnCancelClicked() {
+    setFullName(currentFullName);
+    setAvatar(null);
+  }
+
   // JSX//////////////////////////////////////////
   return (
     <Form onSubmit={(e) => handleSubmit(e)}>
@@ -58,6 +63,7 @@ function UpdateUserDataForm() {
           disabled={updationStatus === "pending"}
           type="reset"
           variation="secondary"
+          onClick={() => btnCancelClicked()}
         >
           Cancel
         </Button>
