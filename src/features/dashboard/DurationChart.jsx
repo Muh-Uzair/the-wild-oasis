@@ -1,4 +1,16 @@
 import styled from "styled-components";
+import { Heading } from "../../ui/Heading";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useContext } from "react";
+import { DarkModeContext } from "../../ui/DarkModeProvider";
+import PropTypes from "prop-types";
 
 const ChartBox = styled.div`
   /* Box */
@@ -130,3 +142,51 @@ function prepareData(startData, stays) {
 
   return data;
 }
+
+DurationChart.propTypes = {
+  confirmedStays: PropTypes.array.isRequired,
+};
+
+// COMPONENT START///////////////////////////////////////////////
+export default function DurationChart({ confirmedStays }) {
+  // STATE & VARIABLES
+  const { isDarkMode } = useContext(DarkModeContext);
+  const startData = isDarkMode ? startDataDark : startDataLight;
+  const data = prepareData(startData, confirmedStays);
+
+  // FUNCTIONS
+
+  // JSX//////////////////////////////////////////
+  return (
+    <ChartBox>
+      <Heading as="h2">Stay Duration Summary</Heading>
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie
+            data={data}
+            nameKey="duration"
+            dataKey="value"
+            innerRadius={70}
+            outerRadius={110}
+            paddingAngle={3}
+            cx="40%"
+            cy="45%"
+          >
+            {startDataLight.map((entry, i) => (
+              <Cell fill={entry.color} key={i} stroke={entry.color} />
+            ))}
+          </Pie>
+          <Legend
+            layout="vertical"
+            verticalAlign="middle"
+            align="right"
+            iconType="wye"
+          />
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartBox>
+  );
+  // JSX//////////////////////////////////////////
+}
+// COMPONENT END/////////////////////////////////////////////////
